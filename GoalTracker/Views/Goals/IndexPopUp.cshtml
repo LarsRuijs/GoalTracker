@@ -1,0 +1,38 @@
+﻿@model EditGoalViewModel
+<!-- Modal -->
+<div id="IndexPopUp" class="modal fade" data-keyboard="false" data-backdrop="static">
+    <div class="modal-dialog">
+
+        <!-- Modal content-->
+        <div class="modal-content">
+            <div class="modal-header">
+                <h4 class="modal-title">The deadline of your goal: "@Model.Title", has passed.</h4>
+            </div>
+            <div class="modal-body">
+                @Html.ValidationSummary(false, "", new { @class = "text-danger" })
+                <p>Please give input about the status of your goal:</p>
+                <form method="post">
+                    <input type="hidden" asp-for="@Model.GoalId" />
+                    <input type="hidden" asp-for="@Model.UserId" />
+                    <input type="hidden" asp-for="@Model.Title" />
+                    <input type="hidden" asp-for="@Model.Info" />
+                    <input type="hidden" asp-for="@Model.StartDT" />
+                    <input type="hidden" asp-for="@Model.Progress" />
+                    <input type="hidden" asp-for="@Model.Strikes" />
+                    <input type="radio" name="NewStatus" value="1"> I finished the goal!<br />
+                    <input id="changeDeadline" type="radio" name="NewStatus" value="0"> I would like to change my deadline, please.<br />
+                    <input type="radio" name="NewStatus" value="2"> I would like to cancel this goal, please.<br />
+                    <br />
+                    <div id="newDeadline" hidden>
+                        New deadline: <input asp-for="@Model.EndDT" class="form-control" />
+                    </div>
+                    <br />
+                    <div class="text-center">
+                        <button class="btn btn-primary btn-lg" type="submit">Submit</button>
+                    </div>
+                </form>
+            </div>
+        </div>
+
+    </div>
+</div>

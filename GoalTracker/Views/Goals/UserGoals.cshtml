@@ -1,0 +1,85 @@
+﻿@model UserGoalsViewModel
+@{
+    ViewData["Title"] = "User Goals";
+}
+
+<div class="row">
+    <h1>Goals of user: @Model.Username</h1>
+    @foreach (var item in Model.Goals)
+    {
+        if (item.Status == GoalStatus.InProgress)
+        {
+            <div class="goal">
+                <div class="progressbarContainer">
+                    <div class="progressbar">
+                        <span>@item.Progress%</span>
+                        <input class="progress" name="progress" type="hidden" value="@item.Progress">
+                    </div>
+                </div>
+                <div class="infoContainer">
+                    <h1>@item.Title</h1>
+                    <p>@item.Info</p>
+                    <p class="timeContainer">@item.StartDT -- @item.EndDT</p>
+                    @if (item.Strikes != 0)
+                    {
+                        <p>Number of deadline extensions: @item.Strikes</p>
+                    }
+                </div>
+                <div class="optionsContainer">
+                    @Html.ActionLink("Edit", "EditUserGoal", "Goals", new { Goalid = item.GoalId }, new { @class = "btn btn-default" })
+                </div>
+            </div>
+        }
+        else if (item.Status == GoalStatus.Finished)
+        {
+            <div class="goal finished">
+                <div class="progressbarContainer">
+                    <div class="progressbar">
+                        <span>@item.Progress%</span>
+                        <input class="progress" name="progress" type="hidden" value="@item.Progress">
+                    </div>
+                </div>
+                <div class="infoContainer">
+                    <h1>Finished: @item.Title</h1>
+                    <p>@item.Info</p>
+                    <p class="timeContainer">@item.StartDT -- @item.EndDT</p>
+                    @if (item.Strikes != 0)
+                    {
+                        <p>Number of deadline extensions: @item.Strikes</p>
+                    }
+
+                </div>
+                <div class="optionsContainer">
+                    @Html.ActionLink("Edit", "EditUserGoal", "Goals", new { Goalid = item.GoalId }, new { @class = "btn btn-default" })
+                </div>
+            </div>
+
+        }
+        else if (item.Status == GoalStatus.Canceled)
+        {
+            <div class="goal canceled">
+                <div class="progressbarContainer">
+                    <div class="progressbar">
+                        <span>@item.Progress%</span>
+                        <input class="progress" name="progress" type="hidden" value="@item.Progress">
+                    </div>
+                </div>
+                <div class="infoContainer">
+                    <h1>Canceled: @item.Title</h1>
+                    <p>@item.Info</p>
+                    <p class="timeContainer">@item.StartDT -- @item.EndDT</p>
+                    @if (item.Strikes != 0)
+                    {
+                        <p>Number of deadline extensions: @item.Strikes</p>
+                    }
+                </div>
+                <div class="optionsContainer">
+                    @Html.ActionLink("Edit", "EditUserGoal", "Goals", new { Goalid = item.GoalId }, new { @class = "btn btn-default" })
+                </div>
+            </div>
+
+        }
+    }
+</div>
+
+

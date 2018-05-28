@@ -1,0 +1,63 @@
+﻿@model SingleDiscussionViewModel
+@{
+    ViewData["Title"] = Model.Discussion.Title;
+}
+
+<div class="row">
+    <div id="topicContainer">
+        <div class="col-xs-1">
+            <p>
+                Likes: @Model.Discussion.Likes
+            </p>
+
+            <form asp-action="LikeUnlike" method="post">
+                <input type="hidden" asp-for="DiscussionId" name="DiscussionId" />
+                <button type="submit" class="btn btn-default">Like</button>
+            </form>
+        </div>
+        <div class="col-xs-11">
+            <h1>@Model.Discussion.Title</h1>
+            <p>@Model.Discussion.Content</p>
+            <p>
+                Submitted on: @Model.Discussion.PostDT
+            </p>
+            <p>
+                Submitted by: @Model.Discussion.Submitter.Username
+            </p>
+            <p>
+                Likes: @Model.Discussion.Likes
+            </p>
+        </div>
+        
+    </div>
+    @foreach (var comment in Model.Discussion.Comments)
+    {
+        <div class="commentContainer">
+            <div class="col-xs-2">
+                @comment.Submitter.Username
+            </div>
+            <div class="col-xs-10">
+                <p>
+                    @comment.Content
+                </p>
+            </div>
+            <div class="col-xs-2"></div>
+            <p>Submitted on: @comment.PostDT</p>
+            <form asp-action="LikeUnlikeComment" method="post">
+                <input type="hidden" asp-for="@comment.CommentId" name="CommentId" />
+                <input type="hidden" asp-for="DiscussionId" name="DiscussionId" />
+                <button type="submit" class="btn btn-default">Like</button>
+            </form>
+            @comment.Likes
+            @*<button onclick="ReactToComment('@comment.Content','@comment.Submitter.Username','@comment.PostDT');">React</button>*@
+        </div>
+    }
+    <form method="post" action="PostComment">
+        <input type="hidden" asp-for="Discussion.DiscussionId" name="DiscussionId" />
+        <input type="hidden" asp-for="UserId" name="UserId" />
+        <div class="col-xs-12">
+            <textarea id="yourComment" asp-for="@Model.Entry"></textarea>
+        </div>
+        <button type="submit" class="btn btn-default">Submit</button>
+    </form>
+</div>

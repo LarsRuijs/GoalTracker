@@ -1,0 +1,20 @@
+﻿@model GoalTracker.ViewModels.CreateDiscussionViewModel
+
+@{
+    
+}
+
+<div class="row">
+    <h1>Create new discussion</h1>
+    <form asp-action="Create" method="post">
+        <div asp-validation-summary="ModelOnly" class="text-danger"></div>
+
+        <label asp-for="Title" class="control-label"></label>
+        <input asp-for="Title" class="form-control" />
+
+        <label asp-for="Content" class="control-label"></label>
+        <input asp-for="Content" class="form-control" />
+
+        <input type="submit" value="Create" class="btn btn-default" />
+    </form>
+</div>
