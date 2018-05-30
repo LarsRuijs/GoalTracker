@@ -21,10 +21,6 @@ namespace Data
 
         public string CheckIfUserExists(string email, string username) => context.CheckIfUserExists(email, username);
 
-        public string CheckByEmail(string email) => context.CheckByEmail(email);
-
-        public string CheckByUsername(string username) => context.CheckByUsername(username);
-
         public User GetUserByLogin(string username, string password) => context.GetUserByLogin(username, password);
 
         public bool Register(User user) => context.Register(user);

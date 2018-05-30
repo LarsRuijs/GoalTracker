@@ -34,9 +34,27 @@ namespace GoalTracker.Controllers
         }
 
         [HttpPost]
-        public IActionResult LockDiscussion(int DiscussionId)
+        public IActionResult LockUnlockDiscussion(int DiscussionId)
         {
-            throw new NotImplementedException();
+            var success = logic.LockUnlock(DiscussionId);
+
+            return RedirectToAction("Index", new { DiscussionId });
+        }
+
+        [HttpPost]
+        public IActionResult HideUnhideComment(int CommentId, int DiscussionId)
+        {
+            var success = cLogic.LockUnlock(CommentId);
+
+            return RedirectToAction("Single", new { DiscussionId });
+        }
+
+        [HttpPost]
+        public IActionResult DeleteDiscussion(int DiscussionId)
+        {
+            var deleted = logic.Delete(DiscussionId);
+
+            return RedirectToAction("Index");
         }
 
         [HttpGet]
@@ -63,7 +81,11 @@ namespace GoalTracker.Controllers
                 return View(model);
             }
 
-            var submitter = new User() { UserId = model.UserId };
+            // User aanmaken om in de comment te stoppen
+            var submitter = new User()
+            {
+                UserId = model.UserId
+            };
 
             var comment = new Comment()
             {
@@ -74,7 +96,7 @@ namespace GoalTracker.Controllers
 
             cLogic.Create(comment);
 
-            return RedirectToAction("Single", new { DiscussionId = model.DiscussionId });
+            return RedirectToAction("Single", new { model.DiscussionId });
         }
 
         [HttpPost]
@@ -96,7 +118,7 @@ namespace GoalTracker.Controllers
 
             var feedback = cLogic.LikeUnlike(id, CommentId);
 
-            return RedirectToAction("Single", new { DiscussionId = DiscussionId });
+            return RedirectToAction("Single", new { DiscussionId });
         }
 
         public IActionResult Create()
@@ -115,8 +137,11 @@ namespace GoalTracker.Controllers
             int id = Convert.ToInt32(User.Claims.Where(c => c.Type == "Id")
                 .Select(c => c.Value).SingleOrDefault());
 
-            var submitter = new User();
-            submitter.UserId = id;
+            // User aanmaken om in de comment te stoppen
+            var submitter = new User()
+            {
+                UserId = id
+            };
 
             var discussion = new Discussion()
             {

@@ -18,6 +18,24 @@ namespace Logic
 
         public bool LikeUnlike(int userId, int discussionId) => repo.LikeUnlike(userId, discussionId);
 
+        public bool LockUnlock(int discussionId)
+        {
+            Discussion discussion = repo.GetDiscussionById(discussionId);
+
+            if (discussion.Locked == true)
+            {
+                discussion.Locked = false;
+            }
+            else
+            {
+                discussion.Locked = true;
+            }
+
+            bool edited = repo.Edit(discussion);
+
+            return edited;
+        }
+
         public bool Create(Discussion discussion)
         {
             // Checkt of de vereiste inputvelden ingevuld zijn
@@ -39,5 +57,7 @@ namespace Logic
 
             return edited;
         }
+
+        public bool Delete(int discussionId) => repo.Delete(discussionId);
     }
 }

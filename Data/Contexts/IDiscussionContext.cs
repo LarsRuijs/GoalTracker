@@ -15,6 +15,8 @@ namespace Data.Contexts
 
         bool Edit(Discussion discussion);
 
+        bool Delete(int DiscussionId);
+
         bool LikeUnlike(int userId, int discussionId);
     }
 }

@@ -34,7 +34,14 @@
             <div class="goal">
                 <div class="progressbarContainer">
                     <div class="progressbar">
-                        <span>@if (item.Progress <= 0) { <span color="black">0%</span> } else { @item.Progress% }</span>
+                        @if (item.Progress <= 0)
+                        {
+                            <span style="color: black;">0%</span> 
+                        }
+                        else
+                        {
+                            <span>@item.Progress%</span> 
+                        }
                         <input class="progress" name="progress" type="hidden" value="@item.Progress">
                     </div>
                 </div>

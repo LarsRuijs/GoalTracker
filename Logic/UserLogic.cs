@@ -23,7 +23,7 @@ namespace Logic
                 throw new Exception("Fill in both a Username and Password.");
 
             User user = repo.GetUserByLogin(username, password);
-
+            
             return user;
         }
 

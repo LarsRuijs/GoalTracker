@@ -17,7 +17,7 @@
     <hr />
     @foreach (var item in Model.Discussions)
     {
-        <div id="Discussion">
+        <div id="Discussion" class="row">
             <div class="col-xs-1">
                 <p>
                     Likes: @item.Likes
@@ -29,19 +29,36 @@
             </div>
             <div class="col-xs-11">
                 <h1>
+                    @if (item.Locked == true) { <span>Locked: </span> }
                     @Html.ActionLink(item.Title, "Single", "Discussions", new { DiscussionId = item.DiscussionId }, null)
                 </h1>
                 <p>
-                    Last activity: @if (!item.Comments.Any()) { @item.PostDT } else { @item.Comments.Max(c => c.PostDT) }
+                    Last activity: @if (!item.Comments.Any())
+                    { 
+                        @item.PostDT 
+                    }
+                    else
+                    { 
+                        @item.Comments.Max(c => c.PostDT) 
+                    }
                 </p>
                 <p>
                     Submitted by: @item.Submitter.Username
                 </p>
                 @if (User.IsInRole("Admin"))
-                {                
-                    <form asp-action="LockDiscussion" method="post">
+                {
+                    <form asp-action="LockUnlockDiscussion" method="post">
                         <input type="hidden" asp-for="@item.DiscussionId" name="DiscussionId" />
-                        <button type="submit" class="btn btn-default">Lock discussion</button>
+                        <button type="submit" class="btn btn-default">
+                            @if (item.Locked == false)
+                            {
+                                <span>Lock discussion</span>
+                            }
+                            else
+                            {
+                                <span>Unlock discussion</span>
+                            }
+                        </button>
                     </form>
                     <form asp-action="DeleteDiscussion" method="post">
                         <input type="hidden" asp-for="@item.DiscussionId" name="DiscussionId" />
@@ -50,8 +67,6 @@
                 }
 
             </div>
-            <hr />
-        </div>
-        
+        </div> 
     }
 </div>

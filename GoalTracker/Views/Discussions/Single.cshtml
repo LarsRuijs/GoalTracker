@@ -4,54 +4,72 @@
 }
 
 <div class="row">
-    <div id="topicContainer">
-        <div class="col-xs-1">
+    <div id="topicContainer" class="row">
+        <div class="col-xs-2">
+            <p>
+                @Model.Discussion.Submitter.Username
+            </p>
             <p>
                 Likes: @Model.Discussion.Likes
             </p>
-
-            <form asp-action="LikeUnlike" method="post">
+            <form asp-action="LikeUnlikeDiscussion" method="post">
                 <input type="hidden" asp-for="DiscussionId" name="DiscussionId" />
                 <button type="submit" class="btn btn-default">Like</button>
             </form>
+            <br />
         </div>
-        <div class="col-xs-11">
+        <div class="col-xs-10">
             <h1>@Model.Discussion.Title</h1>
             <p>@Model.Discussion.Content</p>
             <p>
                 Submitted on: @Model.Discussion.PostDT
             </p>
-            <p>
-                Submitted by: @Model.Discussion.Submitter.Username
-            </p>
-            <p>
-                Likes: @Model.Discussion.Likes
-            </p>
         </div>
-        
     </div>
+<div class="row">
+</div>
     @foreach (var comment in Model.Discussion.Comments)
     {
-        <div class="commentContainer">
+        <div id="comment" class="row">
             <div class="col-xs-2">
-                @comment.Submitter.Username
+                <p>
+                    @comment.Submitter.Username
+                </p>
+                @comment.Likes
+                <form asp-action="LikeUnlikeComment" method="post">
+                    <input type="hidden" asp-for="@comment.CommentId" name="CommentId" />
+                    <input type="hidden" asp-for="DiscussionId" name="DiscussionId" />
+                    <button type="submit" class="btn btn-default">Like</button>
+                </form>
             </div>
             <div class="col-xs-10">
                 <p>
-                    @comment.Content
+                    @if (comment.Hidden == false)
+                    {
+                        @comment.Content
+                    }
+                    else
+                    {
+                        <span>This comment has been hidden due to a violation of the rules.</span>
+                    }
                 </p>
+                <p>Submitted on: @comment.PostDT</p>            
+                <br />                
+                @if (User.IsInRole("Admin"))
+                {
+                    <form asp-action="HideUnhideComment" method="post">
+                        <input type="hidden" asp-for="@comment.CommentId" name="CommentId" />
+                        <input type="hidden" asp-for="DiscussionId" name="DiscussionId" />
+                        <button type="submit" class="btn btn-default">Hide comment</button>
+                    </form>
+                }
+                @*<button onclick="ReactToComment('@comment.Content','@comment.Submitter.Username','@comment.PostDT');">React</button>*@
             </div>
-            <div class="col-xs-2"></div>
-            <p>Submitted on: @comment.PostDT</p>
-            <form asp-action="LikeUnlikeComment" method="post">
-                <input type="hidden" asp-for="@comment.CommentId" name="CommentId" />
-                <input type="hidden" asp-for="DiscussionId" name="DiscussionId" />
-                <button type="submit" class="btn btn-default">Like</button>
-            </form>
-            @comment.Likes
-            @*<button onclick="ReactToComment('@comment.Content','@comment.Submitter.Username','@comment.PostDT');">React</button>*@
         </div>
     }
+
+    @if (Model.Discussion.Locked == false)
+    {
     <form method="post" action="PostComment">
         <input type="hidden" asp-for="Discussion.DiscussionId" name="DiscussionId" />
         <input type="hidden" asp-for="UserId" name="UserId" />
@@ -60,4 +78,10 @@
         </div>
         <button type="submit" class="btn btn-default">Submit</button>
     </form>
+    }
+    else
+    {
+        <span>You cannot comment on a locked discussion.</span>
+
+    }
 </div>

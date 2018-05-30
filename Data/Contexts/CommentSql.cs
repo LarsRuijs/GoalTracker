@@ -39,6 +39,34 @@ namespace Data.Contexts
             }
         }
 
+        public bool Edit(Comment comment)
+        {
+            // Command definition en settings
+            var cmd = new SqlCommand("EditComment", conn);
+            cmd.CommandType = CommandType.StoredProcedure;
+
+            // Command parameters
+            cmd.Parameters.Add("@commentId", SqlDbType.Int).Value = comment.CommentId;
+            cmd.Parameters.Add("@entry", SqlDbType.NVarChar, -1).Value = comment.Content;
+            cmd.Parameters.Add("@hidden", SqlDbType.Bit).Value = comment.Hidden;
+
+            try
+            {
+                conn.Open();
+
+                int rowsUpdated = cmd.ExecuteNonQuery();
+
+                conn.Close();
+
+                return rowsUpdated > 0;
+
+            }
+            catch
+            {
+                return false;
+            }
+        }
+
         public List<Comment> GetComments(int discussionId)
         {
             // Command definition en settings
@@ -71,6 +99,7 @@ namespace Data.Contexts
                         CommentId = (int)reader["CommentId"],
                         Content = (string)reader["Entry"],
                         PostDT = (DateTime)reader["PostDT"],
+                        Hidden = (bool)reader["Hidden"],
                         Likes = (int)reader["Likes"],
                         Submitter = submitter
                     };
@@ -82,6 +111,50 @@ namespace Data.Contexts
             conn.Close();
 
             return comments;
+        }
+
+        public Comment GetComment(int commentId)
+        {
+            // Command definition en settings
+            var cmd = new SqlCommand("GetComment", conn);
+            cmd.CommandType = CommandType.StoredProcedure;
+
+            cmd.Parameters.Add("@commentId", SqlDbType.Int).Value = commentId;
+
+            var comment = new Comment();
+
+            conn.Open();
+
+            var reader = cmd.ExecuteReader();
+
+            if (reader.HasRows)
+            {
+                while (reader.Read())
+                {
+                    var submitter = new User()
+                    {
+                        UserId = (int)reader["UserId"],
+                        Email = (string)reader["Email"],
+                        Username = (string)reader["Username"],
+                        Role = (UserRole)reader["Role"],
+                        Banning = VarHandler.NullableDateTimeHandler(reader["Banning"])
+                    };
+
+                    comment = new Comment()
+                    {
+                        CommentId = (int)reader["CommentId"],
+                        Content = (string)reader["Entry"],
+                        PostDT = (DateTime)reader["PostDT"],
+                        Hidden = (bool)reader["Hidden"],
+                        Likes = (int)reader["Likes"],
+                        Submitter = submitter
+                    };
+                }
+            }
+
+            conn.Close();
+
+            return comment;
         }
 
         public bool LikeUnlike(int userId, int commentId)

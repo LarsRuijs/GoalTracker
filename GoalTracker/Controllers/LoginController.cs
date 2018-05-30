@@ -19,7 +19,7 @@ namespace GoalTracker.Controllers
     {
         UserLogic uLogic = new UserLogic();
 
-        public bool CheckIfLoggedIn()
+        private bool CheckIfLoggedIn()
         {
             try
             {

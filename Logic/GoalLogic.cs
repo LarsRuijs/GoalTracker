@@ -41,7 +41,7 @@ namespace Logic
             return edited;
         }
 
-        public bool CheckForInconsistenties(Goal goal)
+        private bool CheckForInconsistenties(Goal goal)
         {
             if (goal.Title == "")
                 return false;

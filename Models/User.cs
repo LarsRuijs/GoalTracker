@@ -1,5 +1,6 @@
 ﻿using System;
 using System.Collections.Generic;
+using System.Net.Mail;
 
 namespace Models
 {
@@ -12,25 +13,6 @@ namespace Models
         public UserRole Role { get; set; }
         public DateTime? Banning { get; set; }
         public List<Goal> Goals { get; set; }
-
-        public User(int userId, string email, string username, string password, UserRole role, DateTime? banning)
-        {
-            UserId = userId;
-            Email = email;
-            Username = username;
-            Password = password;
-            Role = role;
-            Banning = banning;
-        }
-
-        public User(int userId, string email, string username, UserRole role, DateTime? banning)
-        {
-            UserId = userId;
-            Email = email;
-            Username = username;
-            Role = role;
-            Banning = banning;
-        }
 
         public User() { }
     }

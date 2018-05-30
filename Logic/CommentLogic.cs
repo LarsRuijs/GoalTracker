@@ -15,5 +15,23 @@ namespace Logic
         public List<Comment> GetComments(int discussionId) => repo.GetComments(discussionId);
 
         public bool LikeUnlike(int userId, int commentId) => repo.LikeUnlike(userId, commentId);
+
+        public bool LockUnlock(int commentId)
+        {
+            Comment comment = repo.GetComment(commentId);
+
+            if (comment.Hidden == true)
+            {
+                comment.Hidden = false;
+            }
+            else
+            {
+                comment.Hidden = true;
+            }
+
+            bool edited = repo.Edit(comment);
+
+            return edited;
+        }
     }
 }

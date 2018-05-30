@@ -23,6 +23,8 @@ namespace Data
 
         public bool Edit(Discussion discussion) => context.Edit(discussion);
 
+        public bool Delete(int discussionId) => context.Delete(discussionId);
+
         public List<Discussion> GetDiscussions(string filterInput = "") => context.GetDiscussions(filterInput);
 
         public Discussion GetDiscussionById(int discussionId) => context.GetDiscussionById(discussionId);

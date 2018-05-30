@@ -26,7 +26,7 @@ namespace Data.Contexts
             return eMessage;
         }
 
-        public string CheckByEmail(string email)
+        private string CheckByEmail(string email)
         {
             // Command definition en settings
             var cmd = new SqlCommand("CheckIfUserExists", conn);
@@ -52,7 +52,7 @@ namespace Data.Contexts
             return "";
         }
 
-        public string CheckByUsername(string username)
+        private string CheckByUsername(string username)
         {
             // Command definition en settings
             var cmd = new SqlCommand("CheckIfUserExists", conn);
@@ -98,13 +98,14 @@ namespace Data.Contexts
             {
                 while (reader.Read())
                 {
-                    var user = new User(
-                        (int)reader["UserId"],
-                        (string)reader["Email"],
-                        (string)reader["Username"],
-                        (UserRole)reader["Role"],
-                        VarHandler.NullableDateTimeHandler(reader["Banning"])
-                    );
+                    var user = new User()
+                    {
+                        UserId = (int)reader["UserId"],
+                        Email = (string)reader["Email"],
+                        Username = (string)reader["Username"],
+                        Role = (UserRole)reader["Role"],
+                        Banning = VarHandler.NullableDateTimeHandler(reader["Banning"])
+                    };
 
                     userToReturn = user;
                 }

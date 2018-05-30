@@ -46,10 +46,36 @@ namespace Data.Contexts
             cmd.CommandType = CommandType.StoredProcedure;
 
             // Command parameters
-            cmd.Parameters.Add("@discussionId", SqlDbType.Int).Value = discussion.Submitter.UserId;
+            cmd.Parameters.Add("@discussionId", SqlDbType.Int).Value = discussion.DiscussionId;
             cmd.Parameters.Add("@title", SqlDbType.NVarChar, 100).Value = discussion.Title;
             cmd.Parameters.Add("@description", SqlDbType.NVarChar, -1).Value = discussion.Title;
             cmd.Parameters.Add("@locked", SqlDbType.Bit).Value = discussion.Locked;
+
+            try
+            {
+                conn.Open();
+
+                int rowsUpdated = cmd.ExecuteNonQuery();
+
+                conn.Close();
+
+                return rowsUpdated > 0;
+
+            }
+            catch
+            {
+                return false;
+            }
+        }
+
+        public bool Delete(int discussionId)
+        {
+            // Command definition en settings
+            var cmd = new SqlCommand("DeleteDiscussion", conn);
+            cmd.CommandType = CommandType.StoredProcedure;
+
+            // Command parameters
+            cmd.Parameters.Add("@discussionId", SqlDbType.Int).Value = discussionId;
 
             try
             {
@@ -86,6 +112,7 @@ namespace Data.Contexts
             {
                 while (reader.Read())
                 {
+                    // User apart aanmaken om in de discussion te stoppen
                     var submitter = new User()
                     {
                         UserId = (int)reader["UserId"],
@@ -133,6 +160,7 @@ namespace Data.Contexts
             {
                 while (reader.Read())
                 {
+                    // User apart aanmaken om in de discussion te stoppen
                     var submitter = new User()
                     {
                         UserId = (int)reader["UserId"],
