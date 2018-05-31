@@ -32,9 +32,13 @@ namespace Logic
             if (user.Username == "" || user.Password == "" || user.Email == "")
                 return "Not all required input fields are filled in.";
 
+            if (!EmailCheck(user.Email))
+                return "The inserted email adress is invalid.";
+
             // Checkt of al een user bestaat met de ingevoerde email adres of username.
             string eMessage = repo.CheckIfUserExists(user.Email, user.Username);
 
+            // Checkt of dat een error is ontstaan. 
             if (eMessage != "")
                 return eMessage;
 
@@ -45,6 +49,19 @@ namespace Logic
                 return "Registry failed.";
             else
                 return "";
+        }
+
+        private bool EmailCheck(string email)
+        {
+            try
+            {
+                var addr = new System.Net.Mail.MailAddress(email);
+                return addr.Address == email;
+            }
+            catch
+            {
+                return false;
+            }
         }
     }
 }
