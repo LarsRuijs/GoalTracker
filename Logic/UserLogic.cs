@@ -9,7 +9,7 @@ namespace Logic
 {
     public class UserLogic
     {
-        UserRepository repo = new UserRepository(StorageType.Database);
+        UserRepository repo = new UserRepository(StorageType.Memory);
 
         public List<User> GetUsers(string filter) => repo.GetUsers(filter);
 

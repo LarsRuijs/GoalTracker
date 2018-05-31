@@ -98,21 +98,12 @@
         }
     });
 
-    $("input[name=NewStatus]").change(function(){
+    $("input[name=NewStatus]").change(function () {
         if ($("#changeDeadline").is(":checked")) {
             $("#newDeadline").show();
         } else {
             $("#newDeadline").hide();
-        }       
+        }
     });
-
-    //function ReactToComment(comment, username, postDT) {
-    //    var string = "\"" + comment + "\"\n" +
-    //        "- " + username + ", " + postDT + "\n\n";
-
-    //    string.fontcolor("gray");
-
-    //    document.getElementById("yourComment").value = string;
-    //}
 
 </script>

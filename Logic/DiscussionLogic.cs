@@ -8,7 +8,7 @@ namespace Logic
 {
     public class DiscussionLogic
     {
-        DiscussionRepository repo = new DiscussionRepository(StorageType.Database);
+        DiscussionRepository repo = new DiscussionRepository(StorageType.Memory);
 
         public List<Discussion> GetAllDiscussions() => repo.GetDiscussions();
 

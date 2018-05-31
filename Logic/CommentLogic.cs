@@ -8,7 +8,7 @@ namespace Logic
 {
     public class CommentLogic
     {
-        CommentRepository repo = new CommentRepository(StorageType.Database);
+        CommentRepository repo = new CommentRepository(StorageType.Memory);
 
         public bool Create(Comment comment) => repo.Add(comment);
 

@@ -17,6 +17,7 @@ namespace Models
         public GoalStatus Status { get; set; }
         public int Strikes { get; set; }
         public DateTime PostDT { get; set; }
+        public bool Private { get; set; }
 
         public Goal(int goalId, int userId, string title, string info, DateTime? startDT, DateTime endDT, int progress, GoalStatus status, int strikes, DateTime postDT)
         {

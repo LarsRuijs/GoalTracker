@@ -7,10 +7,11 @@
 <div class="row">
 
     <h1>Create new goal</h1>
+    <p>Make sure you fill in at least the required fields. (*)</p>
     @Html.ValidationSummary(false, "", new { @class = "text-danger" })
 
-    <form method="post">
-        <h3>Goal title</h3>
+    <form method="post" id="createForm">
+        <h3>Goal title *</h3>
         <input asp-for="Title" class="form-control" />
 
         <h3>Extra information</h3>
@@ -19,15 +20,50 @@
         <table>
             <tr>
                 <td><h3>Started on</h3></td>
-                <td><h3>Deadline</h3></td>
+                <td><h3>Deadline *</h3></td>
             </tr>
             <tr>
                 <td><input asp-for="StartDT" value="" class="form-control" /></td>
                 <td><input asp-for="EndDT" class="form-control" /></td>
             </tr>
         </table>
-
-        <button type="submit" class="btn btn-default">Save</button>
-        <a class="btn btn-default" asp-controller="Goals" asp-action="Index">Cancel</a>
+        <br />
+        @*<button type="submit" class="btn btn-default">Save</button>*@
+        <button type="button" id="btnShowModal" class="btn btn-primary btn-lg" onclick="ShowModal()">Save</button>
+        <a class="btn btn-default btn-lg" asp-controller="Goals" asp-action="Index">Cancel</a>
     </form>
 </div>
+
+<div class="modal fade" id="confirmModal" data-keyboard="false" data-backdrop="static">
+    <div class="modal-dialog">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h4 class="modal-title">Confirm</h4>
+            </div>
+            <div class="modal-body">
+                <p>The title and deadline cannot be edited after the creation of the goal.</p>
+                <p>Are you sure you want to keep going?</p>
+                <button type="submit" form="createForm" class="btn btn-primary">Create goal</button>
+                <button type="button" class="btn btn-default" onclick="HideModal()">Close</button>
+            </div>
+        </div>
+    </div>
+</div>
+
+<script>
+    //$(document).ready(function () {
+    //    $("#btnShowModal").click(function () {
+    //        $("#confirmModal").modal('show');
+    //    });
+    //});
+
+    function ShowModal() {
+        $("#confirmModal").modal('show');
+
+    };
+
+    function HideModal() {
+        $("#confirmModal").modal('hide');
+
+    }
+</script>

@@ -5,24 +5,22 @@
 
 <div class="row">
     <div id="topicContainer" class="row">
-        <div class="col-xs-2">
-            <p>
-                @Model.Discussion.Submitter.Username
-            </p>
-            <p>
-                Likes: @Model.Discussion.Likes
-            </p>
-            <form asp-action="LikeUnlikeDiscussion" method="post">
-                <input type="hidden" asp-for="DiscussionId" name="DiscussionId" />
-                <button type="submit" class="btn btn-default">Like</button>
-            </form>
-            <br />
+        <div class="col-xs-1 likes">
+            <div id="likeContainer">
+                <p>
+                    Likes: @Model.Discussion.Likes
+                </p>
+                <form asp-action="LikeUnlikeDiscussion" method="post">
+                    <input type="hidden" asp-for="DiscussionId" name="DiscussionId" />
+                    <button type="submit" class="btn btn-default">Like</button>
+                </form>
+            </div>
         </div>
-        <div class="col-xs-10">
+        <div class="col-xs-11">
             <h1>@Model.Discussion.Title</h1>
             <p>@Model.Discussion.Content</p>
             <p>
-                Submitted on: @Model.Discussion.PostDT
+                Posted by <b>@Model.Discussion.Submitter.Username</b> on <b>@Model.Discussion.PostDT</b>
             </p>
         </div>
     </div>
@@ -31,18 +29,19 @@
     @foreach (var comment in Model.Discussion.Comments)
     {
         <div id="comment" class="row">
-            <div class="col-xs-2">
-                <p>
-                    @comment.Submitter.Username
-                </p>
-                @comment.Likes
-                <form asp-action="LikeUnlikeComment" method="post">
-                    <input type="hidden" asp-for="@comment.CommentId" name="CommentId" />
-                    <input type="hidden" asp-for="DiscussionId" name="DiscussionId" />
-                    <button type="submit" class="btn btn-default">Like</button>
-                </form>
+            <div class="col-xs-1 likes">
+                <div id="likeContainer">
+                    <p>
+                        Likes: @comment.Likes
+                    </p>
+                    <form asp-action="LikeUnlikeComment" method="post">
+                        <input type="hidden" asp-for="@comment.CommentId" name="CommentId" />
+                        <input type="hidden" asp-for="DiscussionId" name="DiscussionId" />
+                        <button type="submit" class="btn btn-default">Like</button>
+                    </form>
+                </div>
             </div>
-            <div class="col-xs-10">
+            <div class="col-xs-11">
                 <p>
                     @if (comment.Hidden == false)
                     {
@@ -53,7 +52,9 @@
                         <span>This comment has been hidden due to a violation of the rules.</span>
                     }
                 </p>
-                <p>Submitted on: @comment.PostDT</p>            
+                <p>
+                    Posted by <b>@comment.Submitter.Username</b> on <b>@comment.PostDT</b>
+                </p>            
                 <br />                
                 @if (User.IsInRole("Admin"))
                 {
@@ -70,13 +71,14 @@
 
     @if (Model.Discussion.Locked == false)
     {
-    <form method="post" action="PostComment">
+    <form method="post" action="PostComment" id="commentForm">
         <input type="hidden" asp-for="Discussion.DiscussionId" name="DiscussionId" />
         <input type="hidden" asp-for="UserId" name="UserId" />
         <div class="col-xs-12">
-            <textarea id="yourComment" asp-for="@Model.Entry"></textarea>
+            <textarea id="yourComment" asp-for="@Model.Entry" placeholder="Type your comment here..."></textarea><br />
+            <button type="submit" class="btn btn-primary">Submit</button>
         </div>
-        <button type="submit" class="btn btn-default">Submit</button>
+        
     </form>
     }
     else

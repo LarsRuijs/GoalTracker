@@ -14,7 +14,7 @@ namespace Data
         {
             switch (st)
             {
-                case StorageType.Memory: throw new NotImplementedException();
+                case StorageType.Memory: context = new CommentMemory(); break;
                 case StorageType.Database: context = new CommentSql(); break;
             }
         }

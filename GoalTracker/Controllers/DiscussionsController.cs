@@ -28,6 +28,11 @@ namespace GoalTracker.Controllers
         [HttpPost]
         public IActionResult Index(DiscussionsIndexViewModel model)
         {
+            if (!ModelState.IsValid)
+            {
+                return View(model);
+            }
+
             model.Discussions = logic.FilterDiscussions(model.FilterInput);
 
             return View(model);

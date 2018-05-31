@@ -9,7 +9,7 @@ namespace Logic
 {
     public class GoalLogic
     {
-        GoalRepository repo = new GoalRepository(StorageType.Database);
+        GoalRepository repo = new GoalRepository(StorageType.Memory);
 
         public List<Goal> GetGoalsByUserId(int userId) => repo.GetGoalsByUserId(userId);
 
