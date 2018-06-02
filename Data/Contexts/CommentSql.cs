@@ -146,7 +146,7 @@ namespace Data.Contexts
                         Content = (string)reader["Entry"],
                         PostDT = (DateTime)reader["PostDT"],
                         Hidden = (bool)reader["Hidden"],
-                        Likes = (int)reader["Likes"],
+                        Likes = reader["Likes"] != null ? 0 : (int)reader["Likes"],
                         Submitter = submitter
                     };
                 }

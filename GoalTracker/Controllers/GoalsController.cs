@@ -23,7 +23,7 @@ namespace GoalTracker.Controllers
             int id = Convert.ToInt32(User.Claims.Where(c => c.Type == "Id")
                 .Select(c => c.Value).SingleOrDefault());
 
-            var goalList = logic.GetGoalsByUserId(id);
+            var goalList = logic.GetAllByUserId(id);
 
             var model = new UserGoalsViewModel();
 
@@ -48,7 +48,7 @@ namespace GoalTracker.Controllers
                 Strikes = model.Strikes
             };
 
-            var edited = logic.EditGoal(goal);
+            var edited = logic.Edit(goal);
 
             if (!edited)
                 throw new Exception("Editing failed.");    
@@ -72,16 +72,7 @@ namespace GoalTracker.Controllers
             int id = Convert.ToInt32(User.Claims.Where(c => c.Type == "Id")
                 .Select(c => c.Value).SingleOrDefault());
 
-            var goal = new Goal()
-            {
-                UserId = id,
-                Title = model.Title,
-                Info = model.Info,
-                StartDT = model.StartDT,
-                EndDT = model.EndDT
-            };
-
-            bool created = logic.CreateGoal(goal);
+            bool created = logic.Add(id, model.Title, model.Info, model.StartDT, model.EndDT);
 
             if (!created)
             {
@@ -96,7 +87,7 @@ namespace GoalTracker.Controllers
         [HttpGet]
         public IActionResult Edit(int goalId)
         {
-            Goal goal = logic.GetGoalById(goalId);
+            Goal goal = logic.GetSingle(goalId);
 
             int id = Convert.ToInt32(User.Claims.Where(c => c.Type == "Id")
                 .Select(c => c.Value).SingleOrDefault());
@@ -141,7 +132,7 @@ namespace GoalTracker.Controllers
                 Strikes = model.Strikes
             };
 
-            bool edited = logic.EditGoal(goal);
+            bool edited = logic.Edit(goal);
 
             if (!edited)
             {
@@ -158,9 +149,9 @@ namespace GoalTracker.Controllers
         {
             var uLogic = new UserLogic();
 
-            User user = uLogic.GetUser(UserId);
+            User user = uLogic.GetSingle(UserId);
 
-            List<Goal> goals = logic.GetGoalsByUserId(UserId);
+            List<Goal> goals = logic.GetAllByUserId(UserId);
 
             var model = new UserGoalsViewModel()
             {
@@ -174,7 +165,7 @@ namespace GoalTracker.Controllers
         [Authorize(Roles = "Admin")]
         public IActionResult EditUserGoal(int GoalId)
         {
-            Goal goal = logic.GetGoalById(GoalId);
+            Goal goal = logic.GetSingle(GoalId);
 
             var model = new EditGoalViewModel()
             {
@@ -213,7 +204,7 @@ namespace GoalTracker.Controllers
                 Strikes = model.Strikes
             };
 
-            bool edited = logic.EditGoal(goal);
+            bool edited = logic.Edit(goal);
 
             if (!edited)
             {

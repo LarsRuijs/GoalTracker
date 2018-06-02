@@ -25,9 +25,9 @@ namespace Data
 
         public bool Delete(int discussionId) => context.Delete(discussionId);
 
-        public List<Discussion> GetDiscussions(string filterInput = "") => context.GetDiscussions(filterInput);
+        public List<Discussion> GetAll(string filterInput = "") => context.GetAll(filterInput);
 
-        public Discussion GetDiscussionById(int discussionId) => context.GetDiscussionById(discussionId);
+        public Discussion GetSingle(int discussionId) => context.GetSingle(discussionId);
 
         public bool LikeUnlike(int userId, int discussionId) => context.LikeUnlike(userId, discussionId);
     }

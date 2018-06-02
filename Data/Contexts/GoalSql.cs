@@ -11,7 +11,7 @@ namespace Data.Contexts
     {
         SqlConnection conn = new SqlConnection(@"Data Source=mssql.fhict.local;Initial Catalog=dbi393093;Persist Security Info=True;User ID=dbi393093;Password=welkom");
 
-        public List<Goal> GetGoalsByUserId(int userId)
+        public List<Goal> GetAllByUserId(int userId)
         {
             // Command definition en settings
             var cmd = new SqlCommand("GetGoals", conn);
@@ -52,7 +52,7 @@ namespace Data.Contexts
             return goalList;
         }
 
-        public Goal GetGoalById(int goalId)
+        public Goal GetSingle(int goalId)
         {
             // Command definition en settings
             var cmd = new SqlCommand("GetGoal", conn);
@@ -93,7 +93,7 @@ namespace Data.Contexts
             return goalToReturn;
         }
 
-        public bool CreateGoal(Goal goal)
+        public bool Add(Goal goal)
         {
             // Command definition en settings
             var cmd = new SqlCommand("CreateGoal", conn);
@@ -124,7 +124,7 @@ namespace Data.Contexts
             }
         }
 
-        public bool EditGoal(Goal goal)
+        public bool Edit(Goal goal)
         {
             // Command definition en settings
             var cmd = new SqlCommand("EditGoal", conn);

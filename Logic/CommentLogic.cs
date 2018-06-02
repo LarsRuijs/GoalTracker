@@ -8,13 +8,32 @@ namespace Logic
 {
     public class CommentLogic
     {
-        CommentRepository repo = new CommentRepository(StorageType.Memory);
+        CommentRepository repo = new CommentRepository(StorageType.Database);
 
-        public bool Create(Comment comment) => repo.Add(comment);
-
-        public List<Comment> GetComments(int discussionId) => repo.GetComments(discussionId);
+        public List<Comment> GetAllByDiscussionId(int discussionId) => repo.GetComments(discussionId);
 
         public bool LikeUnlike(int userId, int commentId) => repo.LikeUnlike(userId, commentId);
+
+        public bool Add(int userId, string content)
+        {
+            if (String.IsNullOrEmpty(content))
+                return false;
+
+            var submitter = new User()
+            {
+                UserId = userId
+            };
+
+            var comment = new Comment()
+            {
+                Submitter = submitter,
+                Content = content
+            };
+
+            bool response = repo.Add(comment);
+
+            return response;
+        }
 
         public bool LockUnlock(int commentId)
         {

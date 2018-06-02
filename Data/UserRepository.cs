@@ -21,14 +21,14 @@ namespace Data
 
         public string CheckIfUserExists(string email, string username) => context.CheckIfUserExists(email, username);
 
-        public User GetUserByLogin(string username, string password) => context.GetUserByLogin(username, password);
+        public User GetUserByLogin(User input) => context.GetUserByLogin(input);
 
         public bool Register(User user) => context.Register(user);
 
-        public List<User> GetUsers(string filter) => context.GetUsers(filter);
+        public List<User> GetAllByFilter(string filter) => context.GetAllByFilter(filter);
 
-        public User GetUser(int userId) => context.GetUser(userId);
+        public User GetSingle(int userId) => context.GetSingle(userId);
 
-        public bool EditUser(User user) => context.EditUser(user);
+        public bool Edit(User user) => context.Edit(user);
     }
 }

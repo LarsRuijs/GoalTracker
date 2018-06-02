@@ -8,10 +8,10 @@ namespace Data.Contexts
     internal interface IUserContext
     {
         string CheckIfUserExists(string email, string username);
-        User GetUserByLogin(string username, string password);
+        User GetUserByLogin(User input);
         bool Register(User user);
-        List<User> GetUsers(string filter);
-        User GetUser(int userId);
-        bool EditUser(User user);
+        List<User> GetAllByFilter(string filter);
+        User GetSingle(int userId);
+        bool Edit(User user);
     }
 }

@@ -8,19 +8,21 @@ namespace Logic
 {
     public class DiscussionLogic
     {
-        DiscussionRepository repo = new DiscussionRepository(StorageType.Memory);
+        DiscussionRepository repo = new DiscussionRepository(StorageType.Database);
 
-        public List<Discussion> GetAllDiscussions() => repo.GetDiscussions();
+        public List<Discussion> GetAll() => repo.GetAll();
 
-        public List<Discussion> FilterDiscussions(string filterInput) => repo.GetDiscussions(filterInput);
+        public List<Discussion> GetAllByFilter(string filterInput) => repo.GetAll(filterInput);
 
-        public Discussion GetDiscussion(int discussionId) => repo.GetDiscussionById(discussionId);
+        public Discussion GetSingle(int discussionId) => repo.GetSingle(discussionId);
 
         public bool LikeUnlike(int userId, int discussionId) => repo.LikeUnlike(userId, discussionId);
 
+        public bool Delete(int discussionId) => repo.Delete(discussionId);
+
         public bool LockUnlock(int discussionId)
         {
-            Discussion discussion = repo.GetDiscussionById(discussionId);
+            Discussion discussion = repo.GetSingle(discussionId);
 
             if (discussion.Locked == true)
             {
@@ -36,15 +38,27 @@ namespace Logic
             return edited;
         }
 
-        public bool Create(Discussion discussion)
+        public bool Add(int userId, string title, string content)
         {
             // Checkt of de vereiste inputvelden ingevuld zijn
-            if (String.IsNullOrEmpty(discussion.Title) || String.IsNullOrEmpty(discussion.Content))
+            if (String.IsNullOrEmpty(title) || String.IsNullOrEmpty(content))
                 return false;
 
-            bool created = repo.Add(discussion);
+            var submitter = new User()
+            {
+                UserId = userId
+            };
 
-            return created;
+            var discussion = new Discussion()
+            {
+                Submitter = submitter,
+                Title = title,
+                Content = content
+            };
+
+            bool response = repo.Add(discussion);
+
+            return response;
         }
 
         public bool Edit(Discussion discussion)
@@ -53,11 +67,9 @@ namespace Logic
             if (String.IsNullOrEmpty(discussion.Title) || String.IsNullOrEmpty(discussion.Content))
                 return false;
 
-            bool edited = repo.Edit(discussion);
+            bool response = repo.Edit(discussion);
 
-            return edited;
+            return response;
         }
-
-        public bool Delete(int discussionId) => repo.Delete(discussionId);
     }
 }

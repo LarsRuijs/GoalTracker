@@ -19,12 +19,12 @@ namespace Data
             }
         }
 
-        public List<Goal> GetGoalsByUserId(int userId) => context.GetGoalsByUserId(userId);
+        public List<Goal> GetAllByUserId(int userId) => context.GetAllByUserId(userId);
 
-        public Goal GetGoalById(int goalId) => context.GetGoalById(goalId);
+        public Goal GetSingle(int goalId) => context.GetSingle(goalId);
 
-        public bool CreateGoal(Goal goal) => context.CreateGoal(goal);
+        public bool Add(Goal goal) => context.Add(goal);
 
-        public bool EditGoal(Goal goal) => context.EditGoal(goal);
+        public bool Edit(Goal goal) => context.Edit(goal);
     }
 }

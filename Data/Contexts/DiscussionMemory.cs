@@ -48,9 +48,9 @@ namespace Data.Contexts
             return true;
         }
 
-        public Discussion GetDiscussionById(int discussionId) => discussions.FirstOrDefault(d => d.DiscussionId == discussionId);
+        public Discussion GetSingle(int discussionId) => discussions.FirstOrDefault(d => d.DiscussionId == discussionId);
 
-        public List<Discussion> GetDiscussions(string filterInput = "")
+        public List<Discussion> GetAll(string filterInput = "")
         {
             var list = new List<Discussion>();
 

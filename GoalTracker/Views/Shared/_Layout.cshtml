@@ -38,7 +38,8 @@
                     }
                     <li><a asp-area="" asp-controller="Goals" asp-action="Index">My Goals</a></li>
                     <li><a asp-area="" asp-controller="Discussions" asp-action="Index">Discussions</a></li>
-                    <li><a asp-area="" asp-controller="Login" asp-action="Logout">Logout</a></li>                    
+                    <li><a asp-area="" asp-controller="Login" asp-action="About">About</a></li>
+                    <li><a asp-area="" asp-controller="Login" asp-action="Logout">Logout</a></li>
                 </ul>
             </div>
         </div>
@@ -54,6 +55,7 @@
     <environment include="Development">
         <script src="~/lib/jquery/dist/jquery.js"></script>
         <script src="~/lib/bootstrap/dist/js/bootstrap.js"></script>
+
         <script src="~/js/site.js" asp-append-version="true"></script>
     </environment>
     <environment exclude="Development">
@@ -71,6 +73,7 @@
         </script>
         <script src="~/js/site.min.js" asp-append-version="true"></script>
     </environment>
+    <script async defer src="https://maps.googleapis.com/maps/api/js?key=AIzaSyCBq6Zfi8O5xu-TsA8Cfoxbl7VPWIWwXs0&callback=initMap"></script>
 
     @RenderSection("Scripts", required: false)
 </body>
@@ -106,4 +109,18 @@
         }
     });
 
+    function initMap() {
+        var myLatlng = new google.maps.LatLng(51.4520886, 5.481982600000038);
+
+        var map = new google.maps.Map(document.getElementById('map'), {
+            center: myLatlng,
+            zoom: 13
+        });
+
+        var marker = new google.maps.Marker({
+            position: myLatlng,
+            map: map,
+            title: 'Fontys'
+        });
+    }
 </script>

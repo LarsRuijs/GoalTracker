@@ -54,7 +54,7 @@ namespace GoalTracker.Controllers
             
             User user = uLogic.Login(model.Username, model.Password);
 
-            if (user.Username == null)
+            if (user == null)
             {
                 ModelState.AddModelError("", "Username and/or password are incorrect.");
 
@@ -114,16 +114,8 @@ namespace GoalTracker.Controllers
                 return View(model);
             }
 
-            var user = new User()
-            {
-                Email = model.Email,
-                Username = model.Username,
-                Password = model.Password,
-                Role = UserRole.User
-            };
-
             // Probeert de user te registeren
-            string eMessage = uLogic.Register(user);
+            string eMessage = uLogic.Register(model.Username, model.Password, model.Email);
 
             // Als iets NIET goed is gegaan bij de registratie, laat de error message zien.
             if (eMessage != "")
@@ -143,7 +135,7 @@ namespace GoalTracker.Controllers
         {
             if (!String.IsNullOrEmpty(model.FilterString))
             {
-                model.Users = uLogic.GetUsers(model.FilterString);
+                model.Users = uLogic.GetAllByFilter(model.FilterString);
             }
 
             return View(model);
@@ -152,7 +144,7 @@ namespace GoalTracker.Controllers
         [Authorize(Roles = "Admin")]
         public IActionResult EditUser(int UserId)
         {
-            User user = uLogic.GetUser(UserId);
+            User user = uLogic.GetSingle(UserId);
 
             var model = new EditUserViewModel()
             {
@@ -188,7 +180,7 @@ namespace GoalTracker.Controllers
                 user.Password = model.OldPassword;
             }
 
-            bool success = uLogic.EditUser(user);
+            bool success = uLogic.Edit(user);
 
             if (user.Username == null)
             {
@@ -198,6 +190,11 @@ namespace GoalTracker.Controllers
             }
 
             return RedirectToAction("Admin", new { UserId = model.UserId });
+        }
+
+        public IActionResult About()
+        {
+            return View();
         }
     }
 }

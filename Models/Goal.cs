@@ -34,5 +34,25 @@ namespace Models
         }
 
         public Goal() { }
+
+        public bool CheckForInconsistenties()
+        {
+            if (Title == "")
+                return false;
+
+            if (Progress < 0 || Progress > 100)
+                return false;
+
+            if (EndDT < DateTime.Now && Status == GoalStatus.InProgress)
+                return false;
+
+            if (StartDT.HasValue)
+            {
+                if (StartDT > EndDT)
+                    return false;
+            }
+
+            return true;
+        }
     }
 }

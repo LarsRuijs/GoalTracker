@@ -16,14 +16,14 @@ namespace Data.Contexts
             goals.Add(new Goal() { GoalId = 2, UserId = 1, Title = "Ik ga mijn project af krijgen", EndDT = Convert.ToDateTime("2018-06-15"), PostDT = Convert.ToDateTime("2018-03-31 22:44:00"), Status = GoalStatus.InProgress, Progress = 50 });
         }
 
-        public bool CreateGoal(Goal goal)
+        public bool Add(Goal goal)
         {
             goals.Add(goal);
 
             return true;
         }
 
-        public bool EditGoal(Goal goal)
+        public bool Edit(Goal goal)
         {
             try
             {
@@ -39,9 +39,9 @@ namespace Data.Contexts
             return true;
         }
 
-        public Goal GetGoalById(int goalId) => goals.FirstOrDefault(g => g.GoalId == goalId);
+        public Goal GetSingle(int goalId) => goals.FirstOrDefault(g => g.GoalId == goalId);
 
-        public List<Goal> GetGoalsByUserId(int userId)
+        public List<Goal> GetAllByUserId(int userId)
         {
             var list = new List<Goal>();
 

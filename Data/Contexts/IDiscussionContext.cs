@@ -7,9 +7,9 @@ namespace Data.Contexts
 {
     interface IDiscussionContext
     {
-        Discussion GetDiscussionById(int discussionId);
+        Discussion GetSingle(int discussionId);
 
-        List<Discussion> GetDiscussions(string filterInput = "");
+        List<Discussion> GetAll(string filterInput = "");
 
         bool Add(Discussion discussion);
 

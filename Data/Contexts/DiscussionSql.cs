@@ -94,7 +94,7 @@ namespace Data.Contexts
             }
         }
 
-        public List<Discussion> GetDiscussions(string filterInput = "")
+        public List<Discussion> GetAll(string filterInput = "")
         {
             // Command definition en settings
             var cmd = new SqlCommand("GetDiscussions", conn);
@@ -142,7 +142,7 @@ namespace Data.Contexts
             return discussionList;
         }
 
-        public Discussion GetDiscussionById(int discussionId)
+        public Discussion GetSingle(int discussionId)
         {
             // Command definition en settings
             var cmd = new SqlCommand("GetDiscussion", conn);
@@ -176,7 +176,7 @@ namespace Data.Contexts
                         Title = (string)reader["Title"],
                         Content = (string)reader["Description"],
                         PostDT = (DateTime)reader["PostDT"],
-                        Likes = (int)reader["Likes"],
+                        Likes = reader["Likes"] == null ? 0 : (int)reader["Likes"],
                         Locked = (bool)reader["Locked"],
                         Submitter = submitter
                     };                    

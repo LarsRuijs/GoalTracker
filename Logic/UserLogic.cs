@@ -9,49 +9,64 @@ namespace Logic
 {
     public class UserLogic
     {
-        UserRepository repo = new UserRepository(StorageType.Memory);
+        UserRepository repo = new UserRepository(StorageType.Database);
 
-        public List<User> GetUsers(string filter) => repo.GetUsers(filter);
+        public List<User> GetAllByFilter(string filter) => repo.GetAllByFilter(filter);
 
-        public User GetUser(int userId) => repo.GetUser(userId);
+        public User GetSingle(int userId) => repo.GetSingle(userId);
 
-        public bool EditUser(User user) => repo.EditUser(user);
+        public bool Edit(User user) => repo.Edit(user);
 
-        public User Login(string username, string password)
+        // NEW METHODS //
+
+        public string Register(string username, string password, string email)
         {
-            if (username == "" || password == "")
-                throw new Exception("Fill in both a Username and Password.");
+            if (String.IsNullOrEmpty(username) || String.IsNullOrEmpty(password) || String.IsNullOrEmpty(email))
+                return "Not all required fields are filled in.";
 
-            User user = repo.GetUserByLogin(username, password);
-            
-            return user;
-        }
-
-        public string Register(User user)
-        {
-            if (user.Username == "" || user.Password == "" || user.Email == "")
-                return "Not all required input fields are filled in.";
-
-            if (!EmailCheck(user.Email))
+            if (!CheckEmailAdress(email))
                 return "The inserted email adress is invalid.";
 
             // Checkt of al een user bestaat met de ingevoerde email adres of username.
-            string eMessage = repo.CheckIfUserExists(user.Email, user.Username);
+            string eMessage = repo.CheckIfUserExists(email, username);
 
             // Checkt of dat een error is ontstaan. 
             if (eMessage != "")
                 return eMessage;
 
-            // Registreert de user
-            bool registered = repo.Register(user);
+            var input = new User()
+            {
+                Username = username,
+                Password = password,
+                Email = email
+            };
 
-            if (!registered)
+            // Registreert de user
+            bool response = repo.Register(input);
+
+            if (!response)
                 return "Registry failed.";
             else
                 return "";
         }
 
-        private bool EmailCheck(string email)
+        public User Login(string username, string password)
+        {
+            if (String.IsNullOrEmpty(username) || String.IsNullOrEmpty(password))
+                return new User();
+
+            var input = new User()
+            {
+                Username = username,
+                Password = password
+            };
+
+            User user = repo.GetUserByLogin(input);
+
+            return user;
+        }
+
+        private bool CheckEmailAdress(string email)
         {
             try
             {

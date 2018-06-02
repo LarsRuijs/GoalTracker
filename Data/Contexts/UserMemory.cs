@@ -20,20 +20,20 @@ namespace Data.Contexts
         {
             var user = new User();
 
-            user = users.FirstOrDefault(u => u.Username == username);
-
-            if (String.IsNullOrEmpty(username))
-                return "This username is already in use.";
-
             user = users.FirstOrDefault(u => u.Email == email);
 
-            if (String.IsNullOrEmpty(email))
+            if (user != null)
                 return "This email address is already in use.";
+
+            user = users.FirstOrDefault(u => u.Username == username);
+
+            if (user != null)
+                return "This username is already in use.";
 
             return "";
         }
 
-        public bool EditUser(User user)
+        public bool Edit(User user)
         {
             try
             {
@@ -49,12 +49,12 @@ namespace Data.Contexts
             return true;
         }
 
-        public User GetUser(int userId) => users.FirstOrDefault(u => u.UserId == userId);
+        public User GetSingle(int userId) => users.FirstOrDefault(u => u.UserId == userId);
 
-        public User GetUserByLogin(string username, string password)
-            => users.FirstOrDefault(u => (u.Username == username || u.Email == username) && u.Password == password);
+        public User GetUserByLogin(User user)
+            => users.FirstOrDefault(u => (u.Username == user.Username || u.Email == user.Username) && u.Password == user.Password);
 
-        public List<User> GetUsers(string filter)
+        public List<User> GetAllByFilter(string filter)
         {
             var usersToReturn = new List<User>();
 

@@ -20,7 +20,7 @@ namespace GoalTracker.Controllers
         {
             var model = new DiscussionsIndexViewModel();
 
-            model.Discussions = logic.GetAllDiscussions();
+            model.Discussions = logic.GetAll();
 
             return View(model);
         }
@@ -33,7 +33,7 @@ namespace GoalTracker.Controllers
                 return View(model);
             }
 
-            model.Discussions = logic.FilterDiscussions(model.FilterInput);
+            model.Discussions = logic.GetAllByFilter(model.FilterInput);
 
             return View(model);
         }
@@ -67,8 +67,8 @@ namespace GoalTracker.Controllers
         {
             var model = new SingleDiscussionViewModel();
 
-            model.Discussion = logic.GetDiscussion(DiscussionId);
-            model.Discussion.Comments = cLogic.GetComments(DiscussionId);
+            model.Discussion = logic.GetSingle(DiscussionId);
+            model.Discussion.Comments = cLogic.GetAllByDiscussionId(DiscussionId);
 
             int id = Convert.ToInt32(User.Claims.Where(c => c.Type == "Id")
                 .Select(c => c.Value).SingleOrDefault());
@@ -86,20 +86,10 @@ namespace GoalTracker.Controllers
                 return View(model);
             }
 
-            // User aanmaken om in de comment te stoppen
-            var submitter = new User()
-            {
-                UserId = model.UserId
-            };
+            int id = Convert.ToInt32(User.Claims.Where(c => c.Type == "Id")
+                .Select(c => c.Value).SingleOrDefault());
 
-            var comment = new Comment()
-            {
-                DiscussionId = model.DiscussionId,
-                Submitter = submitter,
-                Content = model.Entry             
-            };
-
-            cLogic.Create(comment);
+            cLogic.Add(id, model.Entry);
 
             return RedirectToAction("Single", new { model.DiscussionId });
         }
@@ -142,20 +132,7 @@ namespace GoalTracker.Controllers
             int id = Convert.ToInt32(User.Claims.Where(c => c.Type == "Id")
                 .Select(c => c.Value).SingleOrDefault());
 
-            // User aanmaken om in de comment te stoppen
-            var submitter = new User()
-            {
-                UserId = id
-            };
-
-            var discussion = new Discussion()
-            {
-                Submitter = submitter,
-                Title = model.Title,
-                Content = model.Content
-            };
-
-            bool created = logic.Create(discussion);
+            bool created = logic.Add(id, model.Title, model.Content);
 
             if (!created)
             {

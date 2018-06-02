@@ -9,56 +9,58 @@ namespace Logic
 {
     public class GoalLogic
     {
-        GoalRepository repo = new GoalRepository(StorageType.Memory);
+        GoalRepository repo = new GoalRepository(StorageType.Database);
 
-        public List<Goal> GetGoalsByUserId(int userId) => repo.GetGoalsByUserId(userId);
+        public List<Goal> GetAllByUserId(int userId) => repo.GetAllByUserId(userId);
 
-        public Goal GetGoalById(int goalId) => repo.GetGoalById(goalId);
+        public Goal GetSingle(int goalId) => repo.GetSingle(goalId);
 
-        public bool CreateGoal(Goal goal)
+        public bool Add(int userId, string title, string info, DateTime? startDT, DateTime endDT)
         {
+            Goal goal = new Goal()
+            {
+                UserId = userId,
+                Title = title,
+                Info = info,
+                StartDT = startDT,
+                EndDT = endDT
+            };
+
             // Checkt de goal voor ongewenste of inconsistente gegevens.
-            if (!CheckForInconsistenties(goal))
-                throw new Exception("The input is missing required data.");
+            if (!goal.CheckForInconsistenties())
+                return false;
 
-            bool created = repo.CreateGoal(goal);
+            bool response = repo.Add(goal);
 
-            return created;
+            return response;
         }
 
-        public bool EditGoal(Goal goal)
+        public bool Edit(Goal goal)
         {
+            // Wanneer de goal succesvol is afgerond wordt de progress parameter automatisch 100%.
+            if (goal.Status == GoalStatus.Finished && goal.Progress != 100)
+                goal.Progress = 100;
+
             // Checkt de goal voor ongewenste of inconsistente gegevens.
-            if (!CheckForInconsistenties(goal))
+            if (!goal.CheckForInconsistenties())
                 return false;
+
+            bool response = repo.Edit(goal);
+
+            return response;
+        }
+
+        public bool FinishGoal(int goalId)
+        {
+            Goal goal = GetSingle(goalId);
 
             // Wanneer de goal succesvol is afgerond wordt de progress parameter automatisch 100%.
             if (goal.Status == GoalStatus.Finished && goal.Progress != 100)
                 goal.Progress = 100;
 
-            bool edited = repo.EditGoal(goal);
+            bool response = repo.Edit(goal);
 
-            return edited;
-        }
-
-        private bool CheckForInconsistenties(Goal goal)
-        {
-            if (goal.Title == "")
-                return false;
-
-            if (goal.Progress < 0 || goal.Progress > 100)
-                return false;
-
-            if (goal.EndDT < DateTime.Now && goal.Status == GoalStatus.InProgress)
-                return false;
-
-            if (goal.StartDT.HasValue)
-            {
-                if (goal.StartDT > goal.EndDT)
-                    return false;
-            }
-
-            return true;
+            return response;
         }
     }
 }

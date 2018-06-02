@@ -78,15 +78,15 @@ namespace Data.Contexts
             return "";
         }
 
-        public User GetUserByLogin(string username, string password)
+        public User GetUserByLogin(User input)
         {
             // Command definition en settings
             var cmd = new SqlCommand("Login", conn);
             cmd.CommandType = CommandType.StoredProcedure;
-
+            
             // Command parameters
-            cmd.Parameters.Add("@username", SqlDbType.NVarChar, 100).Value = username;
-            cmd.Parameters.Add("@password", SqlDbType.NVarChar, 100).Value = password;
+            cmd.Parameters.Add("@username", SqlDbType.NVarChar, 100).Value = input.Username;
+            cmd.Parameters.Add("@password", SqlDbType.NVarChar, 100).Value = input.Password;
 
             var userToReturn = new User();
 
@@ -145,7 +145,7 @@ namespace Data.Contexts
             }
         }
 
-        public List<User> GetUsers(string filter)
+        public List<User> GetAllByFilter(string filter)
         {
             // Command definition en settings
             var cmd = new SqlCommand("GetUsers", conn);
@@ -183,7 +183,7 @@ namespace Data.Contexts
             return users;
         }
 
-        public User GetUser(int userId)
+        public User GetSingle(int userId)
         {
             // Command definition en settings
             var cmd = new SqlCommand("GetUser", conn);
@@ -219,7 +219,7 @@ namespace Data.Contexts
             return user;
         }
 
-        public bool EditUser(User user)
+        public bool Edit(User user)
         {
             // Command definition en settings
             var cmd = new SqlCommand("EditUser", conn);

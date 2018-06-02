@@ -7,9 +7,9 @@ namespace Data.Contexts
 {
     internal interface IGoalContext
     {
-        List<Goal> GetGoalsByUserId(int userId);
-        Goal GetGoalById(int goalId);
-        bool CreateGoal(Goal goal);
-        bool EditGoal(Goal goal);
+        List<Goal> GetAllByUserId(int userId);
+        Goal GetSingle(int goalId);
+        bool Add(Goal goal);
+        bool Edit(Goal goal);
     }
 }
