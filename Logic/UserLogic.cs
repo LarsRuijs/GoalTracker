@@ -17,24 +17,24 @@ namespace Logic
 
         public bool Edit(User user) => repo.Edit(user);
 
-        // NEW METHODS //
-
         public string Register(string username, string password, string email)
         {
-            if (String.IsNullOrEmpty(username) || String.IsNullOrEmpty(password) || String.IsNullOrEmpty(email))
-                return "Not all required fields are filled in.";
+            string eMessage = "";
 
-            if (!CheckEmailAdress(email))
-                return "The inserted email adress is invalid.";
-
-            // Checkt of al een user bestaat met de ingevoerde email adres of username.
-            string eMessage = repo.CheckIfUserExists(email, username);
+            eMessage = CheckRegisterInformation(username, password, email);
 
             // Checkt of dat een error is ontstaan. 
             if (eMessage != "")
                 return eMessage;
 
-            var input = new User()
+            // Checkt of al een user bestaat met de ingevoerde email adres of username.
+            eMessage = repo.CheckIfUserExists(email, username);
+
+            // Checkt of dat een error is ontstaan. 
+            if (eMessage != "")
+                return eMessage;
+
+            var user = new User()
             {
                 Username = username,
                 Password = password,
@@ -42,7 +42,7 @@ namespace Logic
             };
 
             // Registreert de user
-            bool response = repo.Register(input);
+            bool response = repo.Register(user);
 
             if (!response)
                 return "Registry failed.";
@@ -52,8 +52,10 @@ namespace Logic
 
         public User Login(string username, string password)
         {
-            if (String.IsNullOrEmpty(username) || String.IsNullOrEmpty(password))
+            if (CheckLoginInformation(username, password))
+            {
                 return new User();
+            }
 
             var input = new User()
             {
@@ -64,6 +66,25 @@ namespace Logic
             User user = repo.GetUserByLogin(input);
 
             return user;
+        }
+
+        private bool CheckLoginInformation(string username, string password)
+        {
+            if (String.IsNullOrEmpty(username) || String.IsNullOrEmpty(password))
+                return false;
+
+            return true;
+        }
+
+        private string CheckRegisterInformation(string username, string password, string email)
+        {
+            if (String.IsNullOrEmpty(username) || String.IsNullOrEmpty(password) || String.IsNullOrEmpty(email))
+                return "Not all required fields are filled in.";
+
+            if (!CheckEmailAdress(email))
+                return "The inserted email adress is invalid.";
+
+            return "";
         }
 
         private bool CheckEmailAdress(string email)

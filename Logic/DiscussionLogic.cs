@@ -40,8 +40,7 @@ namespace Logic
 
         public bool Add(int userId, string title, string content)
         {
-            // Checkt of de vereiste inputvelden ingevuld zijn
-            if (String.IsNullOrEmpty(title) || String.IsNullOrEmpty(content))
+            if (!CheckDiscussionInput(title, content))
                 return false;
 
             var submitter = new User()
@@ -63,13 +62,20 @@ namespace Logic
 
         public bool Edit(Discussion discussion)
         {
-            // Checkt of de vereiste inputvelden ingevuld zijn
-            if (String.IsNullOrEmpty(discussion.Title) || String.IsNullOrEmpty(discussion.Content))
+            if (!CheckDiscussionInput(discussion.Title, discussion.Content))
                 return false;
 
             bool response = repo.Edit(discussion);
 
             return response;
+        }
+
+        private bool CheckDiscussionInput(string title, string content)
+        {
+            if (String.IsNullOrEmpty(title) || String.IsNullOrEmpty(content))
+                return false;
+
+            return true;
         }
     }
 }

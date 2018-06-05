@@ -35,7 +35,7 @@ namespace Logic
             return response;
         }
 
-        public bool LockUnlock(int commentId)
+        public bool HideUnhide(int commentId)
         {
             Comment comment = repo.GetComment(commentId);
 

@@ -49,7 +49,7 @@ namespace GoalTracker.Controllers
         [HttpPost]
         public IActionResult HideUnhideComment(int CommentId, int DiscussionId)
         {
-            var success = cLogic.LockUnlock(CommentId);
+            var success = cLogic.HideUnhide(CommentId);
 
             return RedirectToAction("Single", new { DiscussionId });
         }
