@@ -11,12 +11,34 @@ namespace Logic
     {
         UserRepository repo = new UserRepository(StorageType.Database);
 
+        /// <summary>
+        /// Gets a filtered list of users.
+        /// </summary>
+        /// <param name="filter">Applies to username and email.</param>
+        /// <returns></returns>
         public List<User> GetAllByFilter(string filter) => repo.GetAllByFilter(filter);
-
+        
+        /// <summary>
+        /// Gets a single user.
+        /// </summary>
+        /// <param name="userId"></param>
+        /// <returns></returns>
         public User GetSingle(int userId) => repo.GetSingle(userId);
 
+        /// <summary>
+        /// Edits a user.
+        /// </summary>
+        /// <param name="user"></param>
+        /// <returns></returns>
         public bool Edit(User user) => repo.Edit(user);
 
+        /// <summary>
+        /// Registers and checks a newly submitted user.
+        /// </summary>
+        /// <param name="username"></param>
+        /// <param name="password"></param>
+        /// <param name="email"></param>
+        /// <returns></returns>
         public string Register(string username, string password, string email)
         {
             string eMessage = "";
@@ -50,9 +72,15 @@ namespace Logic
                 return "";
         }
 
+        /// <summary>
+        /// Gets a user based on username and password.
+        /// </summary>
+        /// <param name="username"></param>
+        /// <param name="password"></param>
+        /// <returns></returns>
         public User Login(string username, string password)
         {
-            if (CheckLoginInformation(username, password))
+            if (!CheckLoginInformation(username, password))
             {
                 return new User();
             }
@@ -68,6 +96,12 @@ namespace Logic
             return user;
         }
 
+        /// <summary>
+        /// Checks if the login input is applyable.
+        /// </summary>
+        /// <param name="username"></param>
+        /// <param name="password"></param>
+        /// <returns></returns>
         private bool CheckLoginInformation(string username, string password)
         {
             if (String.IsNullOrEmpty(username) || String.IsNullOrEmpty(password))
@@ -76,6 +110,13 @@ namespace Logic
             return true;
         }
 
+        /// <summary>
+        /// Checks if the registry input is applyable.
+        /// </summary>
+        /// <param name="username"></param>
+        /// <param name="password"></param>
+        /// <param name="email"></param>
+        /// <returns></returns>
         private string CheckRegisterInformation(string username, string password, string email)
         {
             if (String.IsNullOrEmpty(username) || String.IsNullOrEmpty(password) || String.IsNullOrEmpty(email))
@@ -87,6 +128,11 @@ namespace Logic
             return "";
         }
 
+        /// <summary>
+        /// Checks if the inserted email adress has the actual syntax of an email adress.
+        /// </summary>
+        /// <param name="email"></param>
+        /// <returns></returns>
         private bool CheckEmailAdress(string email)
         {
             try

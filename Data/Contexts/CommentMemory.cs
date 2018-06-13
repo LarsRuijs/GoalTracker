@@ -9,34 +9,61 @@ namespace Data.Contexts
     class CommentMemory : ICommentContext
     {
         List<Comment> comments = new List<Comment>();
+        List<CommentLike> likes = new List<CommentLike>();
 
         public CommentMemory()
         {
+            var commentId1 = 16;
+            var commentId2 = 18;
+
             var submitter1 = new User() { UserId = 55, Email = "sheep@gmail.com", Username = "BeepBeep" };
-            comments.Add(new Comment() { CommentId = 16, DiscussionId = 3, Submitter = submitter1, Content = "What?", Likes = 0, PostDT = Convert.ToDateTime("2018-03-03 09:23:58") });
+            comments.Add(new Comment() { CommentId = commentId1, DiscussionId = 3, Submitter = submitter1, Content = "What?", Likes = likes.Where(l => l.CommentId == commentId1).Count(), PostDT = Convert.ToDateTime("2018-03-03 09:23:58") });
             var submitter2 = new User() { UserId = 56, Email = "penguin@gmail.com", Username = "NOOTNOOT" };
-            comments.Add(new Comment() { CommentId = 18, DiscussionId = 3, Submitter = submitter2, Content = "This is what...", Likes = 113, PostDT = Convert.ToDateTime("2018-03-03 09:44:22") });
+            comments.Add(new Comment() { CommentId = commentId2, DiscussionId = 3, Submitter = submitter2, Content = "This is what...", Likes = likes.Where(l => l.CommentId == commentId2).Count(), PostDT = Convert.ToDateTime("2018-03-03 09:44:22") });
         }
 
         public bool Add(Comment comment)
         {
             comments.Add(comment);
 
+            comment = CreateNecessaryCommentData(comment);
+
             return true;
+        }
+
+        Random rnd = new Random();
+
+        private Comment CreateNecessaryCommentData(Comment comment)
+        {
+            if (comment.CommentId < 0)
+            {
+                var unique = false;
+
+                while (!unique)
+                {
+                    comment.CommentId = rnd.Next(1, 100);
+
+                    if (comments.Exists(d => d.CommentId != comment.CommentId))
+                    {
+                        unique = true;
+                    }
+                }
+            }
+
+            UserMemory um = new UserMemory();
+
+            comment.Submitter = um.GetSingle(comment.Submitter.UserId);
+
+            comment.PostDT = DateTime.Now;
+
+            return comment;
         }
 
         public bool Edit(Comment comment)
         {
-            try
-            {
-                comments.RemoveAll(c => c.CommentId == comment.CommentId);
-            }
-            catch
-            {
-                return false;
-            }
+            var commentToEdit = comments.Find(d => d.CommentId == comment.CommentId);
 
-            comments.Add(comment);
+            commentToEdit.Hidden = comment.Hidden;
 
             return true;
         }
@@ -59,7 +86,16 @@ namespace Data.Contexts
 
         public bool LikeUnlike(int userId, int commentId)
         {
-            throw new NotImplementedException();
+            if (likes.Exists(l => l.UserId == userId && l.CommentId == commentId))
+            {
+                likes.RemoveAll(l => l.UserId == userId && l.CommentId == commentId);
+            }
+            else
+            {
+                likes.Add(new CommentLike() { UserId = userId, CommentId = commentId });
+            }
+
+            return true;
         }
     }
 }

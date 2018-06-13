@@ -45,6 +45,16 @@
     margin: 0 0 20px 0;
 }
 
+.goal .optionsContainer {
+    position: relative;
+}
+
+.goal .optionsContainer .buttons {
+    position: absolute;
+    left: 25%;
+    transform: translate(-50%,50%);
+}
+
 
 .goal .infoContainer .timeContainer {
     font-weight: 600;

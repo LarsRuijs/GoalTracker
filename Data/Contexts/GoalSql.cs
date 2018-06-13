@@ -9,7 +9,7 @@ namespace Data.Contexts
 {
     public class GoalSql : IGoalContext
     {
-        SqlConnection conn = new SqlConnection(@"Data Source=mssql.fhict.local;Initial Catalog=dbi393093;Persist Security Info=True;User ID=dbi393093;Password=welkom");
+        SqlConnection conn = new ConnString(ConnectionType.Remote).Value;
 
         public List<Goal> GetAllByUserId(int userId)
         {
@@ -30,18 +30,19 @@ namespace Data.Contexts
             {
                 while (reader.Read())
                 {
-                    var goal = new Goal(
-                        (int)reader["GoalId"],
-                        (int)reader["UserId"],
-                        (string)reader["Title"],
-                        (string)reader["Info"],
-                        VarHandler.NullableDateTimeHandler(reader["StartDT"]),
-                        (DateTime)reader["EndDT"],
-                        (int)reader["Progress"],
-                        (GoalStatus)reader["Status"],
-                        (int)reader["Strikes"],
-                        (DateTime)reader["PostDT"]
-                    );
+                    var goal = new Goal()
+                    {
+                        GoalId = (int)reader["GoalId"],
+                        UserId = (int)reader["UserId"],
+                        Title = (string)reader["Title"],
+                        Info = (string)reader["Info"],
+                        StartDT = (reader["StartDT"] == DBNull.Value) ? null : (DateTime?)reader["StartDT"],
+                        EndDT = (DateTime)reader["EndDT"],
+                        Progress = (int)reader["Progress"],
+                        Status = (GoalStatus)reader["Status"],
+                        Strikes = (int)reader["Strikes"],
+                        PostDT = (DateTime)reader["PostDT"]
+                    };
 
                     goalList.Add(goal);
                 }
@@ -71,18 +72,19 @@ namespace Data.Contexts
             {
                 while (reader.Read())
                 {
-                    var goal = new Goal(
-                        (int)reader["GoalId"],
-                        (int)reader["UserId"],
-                        (string)reader["Title"],
-                        (string)reader["Info"],
-                        VarHandler.NullableDateTimeHandler(reader["StartDT"]),
-                        (DateTime)reader["EndDT"],
-                        (int)reader["Progress"],
-                        (GoalStatus)reader["Status"],
-                        (int)reader["Strikes"],
-                        (DateTime)reader[ "PostDT"]
-                    );
+                    var goal = new Goal()
+                    {
+                        GoalId = (int)reader["GoalId"],
+                        UserId = (int)reader["UserId"],
+                        Title = (string)reader["Title"],
+                        Info = (string)reader["Info"],
+                        StartDT = (reader["StartDT"] == DBNull.Value) ? null : (DateTime?)reader["StartDT"],
+                        EndDT = (DateTime)reader["EndDT"],
+                        Progress = (int)reader["Progress"],
+                        Status = (GoalStatus)reader["Status"],
+                        Strikes = (int)reader["Strikes"],
+                        PostDT = (DateTime)reader["PostDT"]
+                    };
 
                     goalToReturn = goal;
                 }

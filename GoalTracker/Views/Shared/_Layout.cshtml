@@ -3,12 +3,13 @@
 <head>
     <meta charset="utf-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <link rel="stylesheet" href="~/css/goals.css" />
+    <link rel="stylesheet" href="~/css/discussions.css" />
     <title>@ViewData["Title"] - GoalTracker</title>
+    <link rel="stylesheet" href="~/css/navbar.css" />
     <environment include="Development">
         <link rel="stylesheet" href="~/lib/bootstrap/dist/css/bootstrap.css" />
         <link rel="stylesheet" href="~/css/site.css" />
-        <link rel="stylesheet" href="~/css/goals.css" />
-        <link rel="stylesheet" href="~/css/discussions.css" />
         <link href="https://fonts.googleapis.com/css?family=Roboto" rel="stylesheet">
     </environment>
     <environment exclude="Development">
@@ -28,18 +29,19 @@
                     <span class="icon-bar"></span>
                     <span class="icon-bar"></span>
                 </button>
-                <a asp-area="" asp-controller="Home" asp-action="Index" class="navbar-brand">GoalTracker</a>
+                <!--<a asp-area="" asp-controller="Home" asp-action="Index" class="navbar-brand">GoalTracker</a>-->
+                <span style="color: white;" class="navbar-brand">GoalTracker</span>
             </div>
             <div class="navbar-collapse collapse">
                 <ul class="nav navbar-nav">
                     @if (User.IsInRole("Admin"))
                     {
-                        <li><a asp-area="" asp-controller="Login" asp-action="Admin">Admin users</a></li>
+                        <li><a style="color: white;" asp-area="" asp-controller="Login" asp-action="Admin">Admin users</a></li>
                     }
-                    <li><a asp-area="" asp-controller="Goals" asp-action="Index">My Goals</a></li>
-                    <li><a asp-area="" asp-controller="Discussions" asp-action="Index">Discussions</a></li>
-                    <li><a asp-area="" asp-controller="Login" asp-action="About">About</a></li>
-                    <li><a asp-area="" asp-controller="Login" asp-action="Logout">Logout</a></li>
+                    <li><a class="buttonheader" style="color: white;" asp-area="" asp-controller="Goals" asp-action="Index">My Goals</a></li>
+                    <li><a style="color: white;" asp-area="" asp-controller="Discussions" asp-action="Index">Discussions</a></li>
+                    <li><a style="color: white;" asp-area="" asp-controller="Login" asp-action="About">About</a></li>
+                    <li><a style="color: white;" asp-area="" asp-controller="Login" asp-action="Logout">Logout</a></li>
                 </ul>
             </div>
         </div>

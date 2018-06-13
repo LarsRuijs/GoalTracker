@@ -10,7 +10,7 @@ namespace Data.Contexts
 {
     internal class UserSql : IUserContext
     {
-        SqlConnection conn = new SqlConnection(@"Data Source=mssql.fhict.local;Initial Catalog=dbi393093;Persist Security Info=True;User ID=dbi393093;Password=welkom");
+        SqlConnection conn = new ConnString(ConnectionType.Remote).Value;
 
         public string CheckIfUserExists(string email, string username)
         {
@@ -104,7 +104,7 @@ namespace Data.Contexts
                         Email = (string)reader["Email"],
                         Username = (string)reader["Username"],
                         Role = (UserRole)reader["Role"],
-                        Banning = VarHandler.NullableDateTimeHandler(reader["Banning"])
+                        Banning = (reader["Banning"] == DBNull.Value) ? null : (DateTime?)reader["Banning"]
                     };
 
                     userToReturn = user;
@@ -171,7 +171,7 @@ namespace Data.Contexts
                         Username = (string)reader["Username"],
                         Password = (string)reader["Password"],
                         Role = (UserRole)reader["Role"],
-                        Banning = VarHandler.NullableDateTimeHandler(reader["Banning"])
+                        Banning = (reader["Banning"] == DBNull.Value) ? null : (DateTime?)reader["Banning"]
                     };
 
                     users.Add(user);
@@ -209,7 +209,7 @@ namespace Data.Contexts
                         Username = (string)reader["Username"],
                         Password = (string)reader["Password"],
                         Role = (UserRole)reader["Role"],
-                        Banning = VarHandler.NullableDateTimeHandler(reader["Banning"])
+                        Banning = (reader["Banning"] == DBNull.Value) ? null : (DateTime?)reader["Banning"]
                     };
                 }
             }

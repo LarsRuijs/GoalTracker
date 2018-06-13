@@ -5,11 +5,10 @@
   </PropertyGroup>
 
   <ItemGroup>
-    <PackageReference Include="bootstrap" Version="4.1.1" />
+    <PackageReference Include="bootstrap" Version="1.0.0" />
     <PackageReference Include="MailKit" Version="2.0.4" />
     <PackageReference Include="Microsoft.AspNetCore.All" Version="2.0.8" />
     <PackageReference Include="Microsoft.VisualStudio.Web.CodeGeneration.Design" Version="2.0.4" />
-    <PackageReference Include="Mvc.Bootstrap.Core" Version="3.0.8.12882" />
   </ItemGroup>
 
   <ItemGroup>

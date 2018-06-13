@@ -17,7 +17,7 @@
     <hr />
     @foreach (var item in Model.Discussions)
     {
-        <div id="discussion" class="row">
+        <div id="discussion" class="row panel panel-default">
             <div class="col-xs-1 likes">
                 <div id="likeContainer">
                     <p>
@@ -31,22 +31,24 @@
             </div>
             <div class="col-xs-11">
                 <h1>
-                    @if (item.Locked == true) { <span>Locked: </span> }
+                    @if (item.Locked == true)
+                    {<span>Locked: </span>}
                     @Html.ActionLink(item.Title, "Single", "Discussions", new { DiscussionId = item.DiscussionId }, null)
                 </h1>
                 <p>
                     Last activity: @if (!item.Comments.Any())
-                    { 
-                        @item.PostDT 
+                    {
+                        @item.PostDT
                     }
                     else
-                    { 
-                        @item.Comments.Max(c => c.PostDT) 
+                    {
+                        @item.Comments.Max(c => c.PostDT)
                     }
                 </p>
                 <p>
-                    Posted by <b>@item.Submitter.Username</b> on <b>@item.PostDT</b>
+                    Posted by <b>@item.Submitter.Username</b>
                 </p>
+                <br />
                 @if (User.IsInRole("Admin"))
                 {
                     <form asp-action="LockUnlockDiscussion" method="post">
@@ -62,13 +64,48 @@
                             }
                         </button>
                     </form>
-                    <form asp-action="DeleteDiscussion" method="post">
+                    <br />
+                    <form asp-action="DeleteDiscussion" id="deleteForm" method="post">
                         <input type="hidden" asp-for="@item.DiscussionId" name="DiscussionId" />
-                        <button type="submit" class="btn btn-default">Delete discussion</button>
-                    </form>                
+                        <button type="button" id="btnShowModal" class="btn btn-default" onclick="ShowModal()">Delete discussion</button>
+</form>
                 }
 
             </div>
-        </div> 
+        </div>
     }
 </div>
+
+<div class="modal fade" id="confirmModal" data-keyboard="false" data-backdrop="static">
+    <div class="modal-dialog">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h4 class="modal-title">Confirm</h4>
+            </div>
+            <div class="modal-body">
+                <p>The discussion will be permanently deleted.</p>
+                <p>Are you sure you want to keep going?</p>
+                <button type="submit" form="deleteForm" class="btn btn-primary">Delete</button>
+                <button type="button" class="btn btn-default" onclick="HideModal()">Close</button>
+            </div>
+        </div>
+    </div>
+</div>
+
+<script>
+    //$(document).ready(function () {
+    //    $("#btnShowModal").click(function () {
+    //        $("#confirmModal").modal('show');
+    //    });
+    //});
+
+    function ShowModal() {
+        $("#confirmModal").modal('show');
+
+    };
+
+    function HideModal() {
+        $("#confirmModal").modal('hide');
+
+    }
+</script>

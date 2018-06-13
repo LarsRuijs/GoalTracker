@@ -54,7 +54,7 @@ namespace GoalTracker.Controllers
             
             User user = uLogic.Login(model.Username, model.Password);
 
-            if (user == null)
+            if (user.Username == null)
             {
                 ModelState.AddModelError("", "Username and/or password are incorrect.");
 

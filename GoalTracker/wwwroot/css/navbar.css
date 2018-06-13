@@ -1,0 +1,12 @@
+﻿.navbar-inverse {
+    background-color: #B40431;
+    border: 0;
+}
+
+.navbar-inverse li {
+}
+
+.navbar-inverse li:hover {
+    transition: 0.5s;
+    background-color: #DF013A;
+}

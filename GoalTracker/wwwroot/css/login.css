@@ -1,8 +1,11 @@
 ﻿#loginContainer, #registerContainer {
-    background-color: lightgray;
     font-family: 'Roboto', sans-serif;
     text-align: center;
     padding: 20px 50px 50px 50px;
+}
+
+body {
+    background-color: 
 }
 
 h1 {
@@ -13,27 +16,6 @@ h1 {
 h2 {
     font-size: 30px;
     margin: 20px 0;
-}
-
-.btn {
-    margin: 20px 20px 0 20px;
-}
-
-.btn-left {
-    float: left;
-}
-
-table, tr, td {
-    border: 1px solid black;
-}
-
-td {
-    padding: 10px;
-    min-width: 100px;
-}
-
-td .btn, #adminUsersContainer btn {
-    margin: 0;
 }
 
 #adminUsersContainer form {

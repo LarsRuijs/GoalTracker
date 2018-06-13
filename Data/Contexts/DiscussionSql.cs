@@ -9,7 +9,7 @@ namespace Data.Contexts
 {
     public class DiscussionSql : IDiscussionContext
     {
-        SqlConnection conn = new SqlConnection(@"Data Source=mssql.fhict.local;Initial Catalog=dbi393093;Persist Security Info=True;User ID=dbi393093;Password=welkom");
+        SqlConnection conn = new ConnString(ConnectionType.Remote).Value;
 
         public bool Add(Discussion discussion)
         {
@@ -119,7 +119,7 @@ namespace Data.Contexts
                         Email = (string)reader["Email"],
                         Username = (string)reader["Username"],
                         Role = (UserRole)reader["Role"],
-                        Banning = VarHandler.NullableDateTimeHandler(reader["Banning"])
+                        Banning = (reader["Banning"] == DBNull.Value) ? null : (DateTime?)reader["Banning"]
                     };
 
                     var discussion = new Discussion()
@@ -167,7 +167,7 @@ namespace Data.Contexts
                         Email = (string)reader["Email"],
                         Username = (string)reader["Username"],
                         Role = (UserRole)reader["Role"],
-                        Banning = VarHandler.NullableDateTimeHandler(reader["Banning"])
+                        Banning = (reader["Banning"] == DBNull.Value) ? null : (DateTime?)reader["Banning"]
                     };
 
                     discussion = new Discussion()

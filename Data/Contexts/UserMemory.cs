@@ -70,19 +70,22 @@ namespace Data.Contexts
 
         public bool Register(User user)
         {
-            users.Add(user);
-
-            var unique = false;
-
-            while (!unique)
+            if (user.UserId < 0)
             {
-                user.UserId = rnd.Next(1, 100);
+                var unique = false;
 
-                if (users.Exists(u => u.UserId == user.UserId))
+                while (!unique)
                 {
-                    unique = true;
+                    user.UserId = rnd.Next(1, 100);
+
+                    if (users.Exists(u => u.UserId != user.UserId))
+                    {
+                        unique = true;
+                    }
                 }
             }
+
+            users.Add(user);
 
             return true;
         }

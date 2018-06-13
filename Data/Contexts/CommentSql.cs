@@ -9,7 +9,7 @@ namespace Data.Contexts
 {
     class CommentSql : ICommentContext
     {
-        SqlConnection conn = new SqlConnection(@"Data Source=mssql.fhict.local;Initial Catalog=dbi393093;Persist Security Info=True;User ID=dbi393093;Password=welkom");
+        SqlConnection conn = new ConnString(ConnectionType.Remote).Value;
 
         public bool Add(Comment comment)
         {
@@ -91,7 +91,7 @@ namespace Data.Contexts
                         Email = (string)reader["Email"],
                         Username = (string)reader["Username"],
                         Role = (UserRole)reader["Role"],
-                        Banning = VarHandler.NullableDateTimeHandler(reader["Banning"])
+                        Banning = (reader["Banning"] == DBNull.Value) ? null : (DateTime?)reader["Banning"]
                     };
 
                     var comment = new Comment()
@@ -137,7 +137,7 @@ namespace Data.Contexts
                         Email = (string)reader["Email"],
                         Username = (string)reader["Username"],
                         Role = (UserRole)reader["Role"],
-                        Banning = VarHandler.NullableDateTimeHandler(reader["Banning"])
+                        Banning = (reader["Banning"] == DBNull.Value) ? null : (DateTime?)reader["Banning"]
                     };
 
                     comment = new Comment()

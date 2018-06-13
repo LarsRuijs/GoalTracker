@@ -7,20 +7,20 @@
     <h1>Search users for editing</h1>
     <form method="get">
         <div class="col-xs-3">
-            <input asp-for="FilterString" class="form-control" placeholder="Filter by email or username..." />
+            <input asp-for="FilterString" class="form-control" placeholder="Search by email or username..." />
         </div>
         <button type="submit" class="btn btn-default">Filter</button>
     </form>
     <div class="col-xs-12">
-        <table>
+        <table class="table">
             <thead>
                 <tr>
-                    <td>Email</td>
-                    <td>Username</td>
-                    <td>Role</td>
-                    <td>Banning</td>
-                    <td></td>
-                    <td></td>
+                    <th scope="col">Email</th>
+                    <th scope="col">Username</th>
+                    <th scope="col">Role</th>
+                    <th scope="col">Banning</th>
+                    <th scope="col"></th>
+                    <th scope="col"></th>
                 </tr>
             </thead>
             <tbody>

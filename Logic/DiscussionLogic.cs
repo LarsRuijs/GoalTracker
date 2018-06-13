@@ -10,16 +10,46 @@ namespace Logic
     {
         DiscussionRepository repo = new DiscussionRepository(StorageType.Database);
 
+        /// <summary>
+        /// Gets all discussions.
+        /// </summary>
+        /// <returns></returns>
         public List<Discussion> GetAll() => repo.GetAll();
 
+        /// <summary>
+        /// Gets all filtered list of discussions.
+        /// </summary>
+        /// <param name="filterInput"></param>
+        /// <returns></returns>
         public List<Discussion> GetAllByFilter(string filterInput) => repo.GetAll(filterInput);
 
+        /// <summary>
+        /// Gets a single discussion.
+        /// </summary>
+        /// <param name="discussionId"></param>
+        /// <returns></returns>
         public Discussion GetSingle(int discussionId) => repo.GetSingle(discussionId);
 
+        /// <summary>
+        /// Likes or unlikes the discussion.
+        /// </summary>
+        /// <param name="userId"></param>
+        /// <param name="discussionId"></param>
+        /// <returns></returns>
         public bool LikeUnlike(int userId, int discussionId) => repo.LikeUnlike(userId, discussionId);
 
+        /// <summary>
+        /// Deletes the discussion from the data.
+        /// </summary>
+        /// <param name="discussionId"></param>
+        /// <returns></returns>
         public bool Delete(int discussionId) => repo.Delete(discussionId);
 
+        /// <summary>
+        /// Locks or unlocks the discussion.
+        /// </summary>
+        /// <param name="discussionId"></param>
+        /// <returns></returns>
         public bool LockUnlock(int discussionId)
         {
             Discussion discussion = repo.GetSingle(discussionId);
@@ -38,6 +68,13 @@ namespace Logic
             return edited;
         }
 
+        /// <summary>
+        /// Adds and checks the newly submitted discussion.
+        /// </summary>
+        /// <param name="userId"></param>
+        /// <param name="title"></param>
+        /// <param name="content"></param>
+        /// <returns></returns>
         public bool Add(int userId, string title, string content)
         {
             if (!CheckDiscussionInput(title, content))
@@ -60,6 +97,11 @@ namespace Logic
             return response;
         }
 
+        /// <summary>
+        /// Edits the discussion.
+        /// </summary>
+        /// <param name="discussion"></param>
+        /// <returns></returns>
         public bool Edit(Discussion discussion)
         {
             if (!CheckDiscussionInput(discussion.Title, discussion.Content))
@@ -70,6 +112,12 @@ namespace Logic
             return response;
         }
 
+        /// <summary>
+        /// Checks for unapplyable input.
+        /// </summary>
+        /// <param name="title"></param>
+        /// <param name="content"></param>
+        /// <returns></returns>
         private bool CheckDiscussionInput(string title, string content)
         {
             if (String.IsNullOrEmpty(title) || String.IsNullOrEmpty(content))
